@@ -14,6 +14,6 @@ public class TestController {
 
     @GetMapping("/test")
     public String test() {
-        return id + "\nПривет, одна тут?)))";
+        return id + " \nПривет, одна тут?)))";
     }
 }

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteTargetsManager">
+    <targets>
+      <target name="load-balancer" type="docker" uuid="5838f4ec-0fc2-4b57-b5a7-b10c3d92baec">
+        <config>
+          <option name="targetPlatform">
+            <TargetPlatform />
+          </option>
+          <option name="buildImageConfig">
+            <BuildImageConfig>
+              <option name="builtImageTag" value="load-balancer" />
+              <option name="dockerFile" value="ENS-load-balancer/Dockerfile" />
+            </BuildImageConfig>
+          </option>
+        </config>
+        <ContributedStateBase type="JavaLanguageRuntime">
+          <config>
+            <option name="agentFolder">
+              <VolumeState>
+                <option name="targetSpecificBits">
+                  <map>
+                    <entry key="mountAsVolume" value="false" />
+                  </map>
+                </option>
+              </VolumeState>
+            </option>
+            <option name="classpathFolder">
+              <VolumeState>
+                <option name="targetSpecificBits">
+                  <map>
+                    <entry key="mountAsVolume" value="false" />
+                  </map>
+                </option>
+              </VolumeState>
+            </option>
+            <option name="homePath" value="/opt/java/openjdk" />
+            <option name="javaVersionString" value="17.0.10" />
+          </config>
+        </ContributedStateBase>
+      </target>
+      <target name="api-gateway" type="docker" uuid="c6c487ac-0f82-459e-a70a-6ca82b7bbabd">
+        <config>
+          <option name="targetPlatform">
+            <TargetPlatform />
+          </option>
+          <option name="buildImageConfig">
+            <BuildImageConfig>
+              <option name="builtImageTag" value="api-gateway" />
+              <option name="dockerFile" value="ENS-api-gateway/Dockerfile" />
+            </BuildImageConfig>
+          </option>
+        </config>
+        <ContributedStateBase type="JavaLanguageRuntime">
+          <config>
+            <option name="agentFolder">
+              <VolumeState>
+                <option name="targetSpecificBits">
+                  <map>
+                    <entry key="mountAsVolume" value="false" />
+                  </map>
+                </option>
+              </VolumeState>
+            </option>
+            <option name="classpathFolder">
+              <VolumeState>
+                <option name="targetSpecificBits">
+                  <map>
+                    <entry key="mountAsVolume" value="false" />
+                  </map>
+                </option>
+              </VolumeState>
+            </option>
+            <option name="homePath" value="/opt/java/openjdk" />
+            <option name="javaVersionString" value="17.0.10" />
+          </config>
+        </ContributedStateBase>
+      </target>
+      <target name="request-service" type="docker" uuid="8b5f2bff-b334-4f1f-a46a-dbf7dfe18b2f">
+        <config>
+          <option name="targetPlatform">
+            <TargetPlatform />
+          </option>
+          <option name="buildImageConfig">
+            <BuildImageConfig>
+              <option name="builtImageTag" value="request-service" />
+              <option name="dockerFile" value="ENS-request-service/Dockerfile" />
+            </BuildImageConfig>
+          </option>
+        </config>
+        <ContributedStateBase type="JavaLanguageRuntime">
+          <config>
+            <option name="agentFolder">
+              <VolumeState>
+                <option name="targetSpecificBits">
+                  <map>
+                    <entry key="mountAsVolume" value="false" />
+                  </map>
+                </option>
+              </VolumeState>
+            </option>
+            <option name="classpathFolder">
+              <VolumeState>
+                <option name="targetSpecificBits">
+                  <map>
+                    <entry key="mountAsVolume" value="false" />
+                  </map>
+                </option>
+              </VolumeState>
+            </option>
+            <option name="homePath" value="/opt/java/openjdk" />
+            <option name="javaVersionString" value="17.0.10" />
+          </config>
+        </ContributedStateBase>
+      </target>
+    </targets>
+  </component>
+</project>

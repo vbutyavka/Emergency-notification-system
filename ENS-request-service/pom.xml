@@ -10,12 +10,13 @@
     </parent>
     <groupId>org.ens</groupId>
     <artifactId>request-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <version>1.0-SNAPSHOT</version>
     <name>ENS-request-service</name>
     <description>ENS-request-service</description>
     <properties>
         <java.version>17</java.version>
-        <spring-cloud.version>2023.0.0</spring-cloud.version>
+        <spring-cloud.version>2022.0.4</spring-cloud.version>
     </properties>
     <dependencies>
         <dependency>
@@ -51,7 +52,34 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.2.0</version>
+                <configuration>
+                    <imageName>${name}/${project.artifactId}</imageName>
+                    <imageTags>
+                        <imageTag>${project.version}</imageTag>
+                        <imageTag>latest</imageTag>
+                    </imageTags>
+                    <!-- optionally overwrite tags every time image is built with docker:build -->
+                    <forceTags>true</forceTags>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+
 
 </project>

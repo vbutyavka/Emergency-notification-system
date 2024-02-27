@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  load-balancer:
+#    image: load-balancer-new
+    container_name: lbi
+    build:
+      context: ./ENS-load-balancer/src/main/docker/
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    environment:
+      - JAR_FILE= target/load-balancer-1.0-SNAPSHOT.jar
+      - SERVER_PORT= 8761
+      - TZ= "Europe/Moscow"
+    networks:
+      - default
+
+  api-gateway:
+#    image: api-gateway-new
+    container_name: agi
+    build:
+      context: ./ENS-api-gateway/src/main/docker/
+      dockerfile: Dockerfile
+    ports:
+      - "8765:8765"
+    depends_on:
+      - load-balancer
+    environment:
+      - JAR_FILE= target/api-gateway-1.0-SNAPSHOT.jar
+      - SERVER_PORT= 8765
+      - TZ= "Europe/Moscow"
+    networks:
+      - default
+
+  request-service:
+#    image: request-service-img
+    container_name: rsi
+    build:
+      context: ./ENS-request-service/
+      dockerfile: src/main/docker//Dockerfile
+    ports:
+      - "0:8771"
+    depends_on:
+      - api-gateway
+      - load-balancer
+    environment:
+      - JAR_FILE= target/request-service-1.0-SNAPSHOT.jar
+      - SERVER_PORT= 8771
+      - TZ= "Europe/Moscow"
+    networks:
+      - default
+
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
