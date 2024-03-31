@@ -10,7 +10,11 @@ ENV POSTGRES_DB=diplomaMaster
 EXPOSE 5432
 
 # Копируем SQL скрипт для инициализации мастера
-COPY src/main/resources/scripts/init-master.sql /docker-entrypoint-initdb.d/
+COPY src/main/resources/scripts/a-init-master.sql /docker-entrypoint-initdb.d/
+COPY src/main/resources/scripts/b-create-master.sql /docker-entrypoint-initdb.d/
+COPY src/main/resources/scripts/c-insert-master.sql /docker-entrypoint-initdb.d/
 
 # Устанавливаем права доступа для скрипта
-RUN chmod 777 /docker-entrypoint-initdb.d/init-master.sql
+RUN chmod 777 /docker-entrypoint-initdb.d/a-init-master.sql
+RUN chmod 777 /docker-entrypoint-initdb.d/b-create-master.sql
+RUN chmod 777 /docker-entrypoint-initdb.d/c-insert-master.sql
