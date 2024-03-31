@@ -16,10 +16,12 @@ import org.ens.requestservice.enums.MailStatus;
 public class Mail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_mail")
+    private Long id;
+
     @Column(name = "fk_id_recipient")
     private Long fkIdRecipient;
 
-    @Id
     @Column(name = "fk_id_mailing")
     private Long fkIdMailing;
 
