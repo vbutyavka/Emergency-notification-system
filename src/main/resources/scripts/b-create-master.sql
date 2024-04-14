@@ -49,7 +49,7 @@ CREATE TABLE Recipient
 
 CREATE TABLE Mail
 (
-    id_mailing bigint NOT NULL PRIMARY KEY,
+    id_mail bigint NOT NULL PRIMARY KEY,
     fk_id_recipient bigint NOT NULL REFERENCES Recipient(id_recipient) ON DELETE CASCADE ON UPDATE CASCADE,
     fk_id_mailing bigint NOT NULL REFERENCES Mailing(id_mailing) ON DELETE CASCADE ON UPDATE CASCADE,
     mail_status mail_statuses

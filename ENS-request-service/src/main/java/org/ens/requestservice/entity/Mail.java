@@ -26,5 +26,6 @@ public class Mail {
     private Long fkIdMailing;
 
     @Column(name = "mail_status")
-    private MailStatus status ;
+    @Enumerated(EnumType.STRING)
+    private MailStatus status;//TODO: временно для теста
 }

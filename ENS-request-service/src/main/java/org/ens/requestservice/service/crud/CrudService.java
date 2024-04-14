@@ -17,14 +17,14 @@ public class CrudService<E, R  extends JpaRepository<E, Long>> implements ICrudS
 
     @Override
     public List<E> getAll() {
-        log.info("[{}]\tTrying to getAll()", entityLog.getClass().getSimpleName());
+        log.info("Trying to getAll()");
         return repository.findAll();
     }
 
     @Override
     public E get(Long id) {
         E entity = null;
-        log.info("[{}]\tTrying to get() with id={}", entityLog.getClass().getSimpleName(), id);
+        log.info("Trying to get() with id={}", id);
         Optional<E> optionalEntity = repository.findById(id);
         if(optionalEntity.isPresent()) {
             entity = optionalEntity.get();
@@ -34,13 +34,17 @@ public class CrudService<E, R  extends JpaRepository<E, Long>> implements ICrudS
 
     @Override
     public void insert(E entity) {
-        log.info("[{}]\tTrying to insert()", entityLog.getClass().getSimpleName());
+        log.info("Trying to insert()");
         repository.save(entity);
     }
 
     @Override
     public void delete(Long id) {
-        log.info("[{}]\tTrying to delete() with id={}", entityLog.getClass().getSimpleName(), id);
+        log.info("Trying to delete() with id={}", id);
         repository.deleteById(id);
+    }
+
+    protected void setRepository(R repository) {
+        this.repository = repository;
     }
 }

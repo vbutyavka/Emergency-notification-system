@@ -4,12 +4,13 @@ import org.ens.requestservice.entity.Mail;
 import org.ens.requestservice.enums.MailStatus;
 import org.ens.requestservice.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/emergency")
 public class MailController /*implements CrudController<Mail>*/ {
 
@@ -35,7 +36,7 @@ public class MailController /*implements CrudController<Mail>*/ {
         mail.setFkIdMailing(Long.valueOf(fkIdMailing));
         mail.setStatus(MailStatus.valueOf(status));
         mailService.insert(mail);
-        return "redirect:/emergency/mails";
+        return "mails";
     }
 
     @PutMapping("/mails")
