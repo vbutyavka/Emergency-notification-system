@@ -27,5 +27,5 @@ public class Mail {
 
     @Column(name = "mail_status")
     @Enumerated(EnumType.STRING)
-    private MailStatus status;//TODO: временно для теста
+    private MailStatus status;
 }
