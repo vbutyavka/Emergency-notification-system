@@ -1,49 +1,61 @@
 package org.ens.requestservice.controller;
 
+import org.ens.requestservice.controller.crud.RdController;
 import org.ens.requestservice.entity.Recipient;
 import org.ens.requestservice.service.RecipientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/emergency")
-public class RecipientController implements CrudController<Recipient> {
+public class RecipientController extends RdController<Recipient, RecipientService> {
     
     @Autowired
     RecipientService recipientService;
 
+    protected RecipientController(RecipientService service) {
+        super(service);
+    }
+
     @GetMapping("/recipients")
     @Override
-    public List<Recipient> getAll() {
-        return recipientService.getAll();
+    public String getAll(Model model) {
+        List<Recipient> recipients =  recipientService.getAll();
+        model.addAttribute("recipients", recipients);
+        return "recipients";
     }
 
     @GetMapping("/recipients/{id}")
     @Override
-    public Recipient get(@PathVariable Long id) {
-        return recipientService.get(id);
+    public String get(@PathVariable Long id, Model model) {
+        Recipient recipient =  recipientService.get(id);
+        model.addAttribute("recipient", recipient);
+        return "edit-recipient";
     }
 
     @PostMapping("/recipients")
-    @Override
+//    @Override
     public Recipient add(@RequestBody Recipient recipient) {
         recipientService.insert(recipient);
         return recipient;
     }
 
-    @PutMapping("/recipients")
-    @Override
-    public Recipient update(@RequestBody Recipient recipient) {
+    @PostMapping("/update-recipient")
+//    @Override
+    public String update(@RequestBody Recipient recipient) {
         recipientService.insert(recipient);
-        return recipient;
+        return "redirect:/emergency/recipients";
     }
 
-    @DeleteMapping("/recipients/{id}")
+    @GetMapping("/delete-recipient/{id}")
     @Override
-    public Long delete(@PathVariable Long id) {
+    public String delete(@PathVariable Long id, Model model) {
         recipientService.delete(id);
-        return id;
+        List<Recipient> recipients =  recipientService.getAll();
+        model.addAttribute("recipients", recipients);
+        return "recipients";
     }
 }

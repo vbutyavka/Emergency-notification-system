@@ -1,8 +1,144 @@
-<html>
-<head><title>Home Page</title></head>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mail Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; /* голубой */
+            color: #00008b; /* тёмно-синий */
+        }
+
+        h1 {
+            color: #000080; /* тёмно-синий */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #000080; /* тёмно-синий */
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #add8e6; /* светло-голубой */
+        }
+
+        tr:nth-child(even) {
+            background-color: #f0f8ff; /* голубой */
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff; /* белый */
+        }
+
+        .btn {
+            background-color: #000080; /* тёмно-синий */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #00008b; /* тёмно-синий */
+        }
+    </style>
+</head>
 <body>
-<h1>Hello !</h1>
-<p>Welcome!</p>
-<li th:each="item : ${mails}" th:text="${item.getId()}"></li>
+<h1>Mail Management</h1>
+
+<!-- Add Mail Form -->
+<form id="add" action="#" th:action="@{/emergency/mails}" method="post">
+    <label for="fkIdRecipient">Recipient ID:</label>
+    <input type="text" id="fkIdRecipient" name="fkIdRecipient" required>
+    <label for="fkIdMailing">Mailing ID:</label>
+    <input type="text" id="fkIdMailing" name="fkIdMailing" required>
+    <label for="status">Status:</label>
+    <select id="status" name="status" required>
+        <option value="SENT">Sent</option>
+        <option value="CREATED">Created</option>
+    </select>
+    <button class="btn" type="submit">Add</button>
+</form>
+
+<!-- Displaying List of Mails -->
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Recipient ID</th>
+        <th>Mailing ID</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="mail : ${mails}">
+        <td th:text="${mail.id}"></td>
+        <td th:text="${mail.fkIdRecipient}"></td>
+        <td th:text="${mail.fkIdMailing}"></td>
+        <td>
+            <span th:if="${mail.status.name() == 'SENT'}">SENT</span>
+            <span th:if="${mail.status.name() == 'CREATED'}">CREATED</span>
+        </td>
+        <td>
+            <form id="edit" action="#" th:action="@{/emergency/mails/{id}(id=${mail.id})}" method="get">
+                <input type="submit" value="Edit">
+            </form>
+            <form id="delete" action="#" th:action="@{/emergency/delete-mail}" method="post">
+                <input type="hidden" id="id" name="id" th:value="${mail.id}">
+                <input type="submit" value="Delete">
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    document.getElementById('add').addEventListener('submit', function(event) {
+        event.preventDefault();
+        fetch(this.action, {
+            method: this.method,
+            body: new FormData(this)
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    console.error('Ошибка при добавлении элемента');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при отправке AJAX-запроса:', error);
+            });
+    });
+    document.getElementById('delete').addEventListener('submit', function(event) {
+        event.preventDefault();
+        fetch(this.action, {
+            method: this.method,
+            body: new FormData(this)
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "/emergency/mails";
+                } else {
+                    console.error('Ошибка при отправке запроса');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при отправке AJAX-запроса:', error);
+            });
+    });
+</script>
 </body>
 </html>

@@ -7,4 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MailingService extends CrudService<Mailing, MailingRepository> {
+    public MailingService(MailingRepository repository) {
+        super(repository);
+    }
 }

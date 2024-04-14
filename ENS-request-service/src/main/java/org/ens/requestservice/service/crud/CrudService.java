@@ -1,19 +1,24 @@
 package org.ens.requestservice.service.crud;
 
+import org.ens.requestservice.entity.AbstractEntity;
+import org.ens.requestservice.repository.crud.CrudRepository;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public class CrudService<E, R  extends JpaRepository<E, Long>> implements ICrudService<E> {
-
-    private E entityLog;
-    private R repository;
+public abstract class CrudService<E extends AbstractEntity, R  extends CrudRepository<E>> implements ICrudService<E> {
 
     @Autowired
     private Logger log;
+
+    protected final R repository;
+
+    @Autowired
+    public CrudService(R repository) {
+        this.repository = repository;
+    }
 
     @Override
     public List<E> getAll() {
@@ -42,9 +47,5 @@ public class CrudService<E, R  extends JpaRepository<E, Long>> implements ICrudS
     public void delete(Long id) {
         log.info("Trying to delete() with id={}", id);
         repository.deleteById(id);
-    }
-
-    protected void setRepository(R repository) {
-        this.repository = repository;
     }
 }

@@ -13,11 +13,7 @@ import org.ens.requestservice.enums.MailStatus;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Mail {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_mail")
-    private Long id;
+public class Mail extends AbstractEntity {
 
     @Column(name = "fk_id_recipient")
     private Long fkIdRecipient;

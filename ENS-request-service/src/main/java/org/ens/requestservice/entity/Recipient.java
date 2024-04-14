@@ -14,16 +14,13 @@ import org.ens.requestservice.enums.RecipientStatus;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Recipient {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_recipient")
-    private Long id;
+public class Recipient extends AbstractEntity {
 
     @Column(name = "phone_number")
     private Long phoneNumber;
 
     @Column(name = "recipient_status")
+    @Enumerated(EnumType.STRING)
     private RecipientStatus status;
 
     @Column(name = "fk_id_ld")

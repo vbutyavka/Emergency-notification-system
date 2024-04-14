@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Mail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; /* голубой */
+            color: #00008b; /* тёмно-синий */
+        }
+
+        h1 {
+            color: #000080; /* тёмно-синий */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #000080; /* тёмно-синий */
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #add8e6; /* светло-голубой */
+        }
+
+        tr:nth-child(even) {
+            background-color: #f0f8ff; /* голубой */
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff; /* белый */
+        }
+
+        .btn {
+            background-color: #000080; /* тёмно-синий */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #00008b; /* тёмно-синий */
+        }
+    </style>
+</head>
+<body>
+<h1>Edit Mail</h1>
+
+<form id="edit" action="#" th:action="@{/emergency/update-mail}" method="post">
+    <input type="hidden" id="id" name="id" th:value="${mail.id}">
+    <label for="fkIdRecipient">Recipient ID:</label>
+    <input type="text" id="fkIdRecipient" name="fkIdRecipient" th:value="${mail.fkIdRecipient}" required>
+    <label for="fkIdMailing">Mailing ID:</label>
+    <input type="text" id="fkIdMailing" name="fkIdMailing" th:value="${mail.fkIdMailing}" required>
+    <label for="status">Status:</label>
+    <select id="status" name="status" required>
+        <option value="SENT">Sent</option>
+        <option value="CREATED">Created</option>
+    </select>
+    <button type="submit">Save</button>
+</form>
+<script>
+    document.getElementById('edit').addEventListener('submit', function(event) {
+        event.preventDefault();
+        fetch(this.action, {
+            method: this.method,
+            body: new FormData(this)
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "/emergency/mails";
+                } else {
+                    console.error('Ошибка при отправке запроса');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при отправке AJAX-запроса:', error);
+            });
+    });
+</script>
+</body>
+</html>

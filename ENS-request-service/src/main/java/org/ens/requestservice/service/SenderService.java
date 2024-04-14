@@ -7,4 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SenderService extends CrudService<Sender, SenderRepository> {
+    public SenderService(SenderRepository repository) {
+        super(repository);
+    }
 }
