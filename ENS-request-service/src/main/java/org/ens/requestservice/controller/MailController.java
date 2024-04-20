@@ -48,7 +48,6 @@ public class MailController extends RdController<Mail, MailService> {
 
     @PostMapping("/mails")
     public String add(@RequestParam String fkIdRecipient, @RequestParam String fkIdMailing, @RequestParam String status) {
-        Mail mail  = new Mail();
         if (fkIdRecipient.isEmpty()) {
             throw new EmptyFieldException("Recipient ID");
         }
@@ -64,6 +63,7 @@ public class MailController extends RdController<Mail, MailService> {
         if (mailingService.get(Long.valueOf(fkIdMailing)) == null) {
             throw new NonexistentFkException("Mailing ID", fkIdMailing, "Mailing");
         }
+        Mail mail  = new Mail();
         mail.setFkIdRecipient(Long.valueOf(fkIdRecipient));
         mail.setFkIdMailing(Long.valueOf(fkIdMailing));
         mail.setStatus(MailStatus.valueOf(status));
@@ -72,7 +72,6 @@ public class MailController extends RdController<Mail, MailService> {
     }
 
     @PostMapping("/update-mail")
-//    @Override
     public String update(@RequestParam Long id, @RequestParam String fkIdRecipient, @RequestParam String fkIdMailing, @RequestParam String status) {
         if (id == null) {
             throw new RuntimeException("Something went wrong: ID id null during update");

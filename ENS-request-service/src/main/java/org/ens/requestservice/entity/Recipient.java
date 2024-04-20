@@ -17,7 +17,7 @@ import org.ens.requestservice.enums.RecipientStatus;
 public class Recipient extends AbstractEntity {
 
     @Column(name = "phone_number")
-    private Long phoneNumber;
+    private String phoneNumber;
 
     @Column(name = "recipient_status")
     @Enumerated(EnumType.STRING)

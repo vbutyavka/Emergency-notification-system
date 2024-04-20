@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Mail Management</title>
+    <title>Mailings Management</title>
 
     <!-- import Bootstrap and Font Awesome -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
@@ -12,26 +12,18 @@
 <body class="bg-light">
 
 <div class="container py-5">
-    <h1 class="text-center mb-5">Mail Management</h1>
+    <h1 class="text-center mb-5">Mailings Management</h1>
 
     <!-- Add Mail Form -->
-    <form id="add" action="#" th:action="@{/emergency/mails}" method="post" class="mb-5">
-        <div class="form-group">
-            <label for="fkIdRecipient">Recipient ID:</label>
-            <input type="text" id="fkIdRecipient" name="fkIdRecipient" required class="form-control">
+    <form id="add" action="#" th:action="@{/emergency/mailings}" method="post" class="mb-5">
+        <div class="form-group">fkIdRecipient
+            <label for="text">Text:</label>
+            <input type="text" id="text" name="text" required class="form-control">
         </div>
 
         <div class="form-group">
-            <label for="fkIdMailing">Mailing ID:</label>
-            <input type="text" id="fkIdMailing" name="fkIdMailing" required class="form-control">
-        </div>
-
-        <div class="form-group">
-            <label for="status">Status:</label>
-            <select id="status" name="status" required class="form-control">
-                <option value="SENT">Sent</option>
-                <option value="CREATED">Created</option>
-            </select>
+            <label for="fkIdSender">Sender ID:</label>
+            <input type="text" id="fkIdSender" name="fkIdSender" required class="form-control">
         </div>
 
         <button class="btn btn-primary" type="submit">Add</button>
@@ -42,30 +34,25 @@
         <thead>
         <tr>
             <th>ID</th>
-            <th>Recipient ID</th>
-            <th>Mailing ID</th>
-            <th>Status</th>
+            <th>Text</th>
+            <th>Sender ID</th>
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="mail : ${mails}">
-            <td th:text="${mail.id}"></td>
-            <td th:text="${mail.fkIdRecipient}"></td>
-            <td th:text="${mail.fkIdMailing}"></td>
-            <td>
-                <span th:if="${mail.status.name() == 'SENT'}" class="badge badge-success">SENT</span>
-                <span th:if="${mail.status.name() == 'CREATED'}" class="badge badge-warning">CREATED</span>
-            </td>
+        <tr th:each="mailing : ${mailings}">
+            <td th:text="${mailing.id}"></td>
+            <td th:text="${mailing.text}"></td>
+            <td th:text="${mailing.fkIdSender}"></td>
             <td>
                 <div style="display: flex;">
-                    <form id="edit" action="#" th:action="@{/emergency/mails/{id}(id=${mail.id})}" method="get">
+                    <form id="edit" action="#" th:action="@{/emergency/mailings/{id}(id=${mailing.id})}" method="get">
                         <button type="submit" class="btn btn-success mr-2">
                             <i class="fa fa-edit"></i> Edit
                         </button>
                     </form>
-                    <form id="delete" action="#" th:action="@{/emergency/delete-mail}" method="post">
-                        <input type="hidden" id="id" name="id" th:value="${mail.id}">
+                    <form id="delete" action="#" th:action="@{/emergency/delete-mailing}" method="post">
+                        <input type="hidden" id="id" name="id" th:value="${mailing.id}">
                         <button type="submit" class="btn btn-danger">
                             <i class="fa fa-trash"></i> Delete
                         </button>
@@ -107,7 +94,7 @@
         })
             .then(response => {
                 if (response.ok) {
-                    window.location.href = "/emergency/mails";
+                    window.location.href = "/emergency/mailings";
                 } else {
                     alert('Ошибка при отправке запроса');
                 }

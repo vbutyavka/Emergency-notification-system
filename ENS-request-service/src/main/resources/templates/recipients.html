@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Mail Management</title>
+    <title>Recipient Management</title>
 
     <!-- import Bootstrap and Font Awesome -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
@@ -12,25 +12,25 @@
 <body class="bg-light">
 
 <div class="container py-5">
-    <h1 class="text-center mb-5">Mail Management</h1>
+    <h1 class="text-center mb-5">Recipient Management</h1>
 
     <!-- Add Mail Form -->
-    <form id="add" action="#" th:action="@{/emergency/mails}" method="post" class="mb-5">
+    <form id="add" action="#" th:action="@{/emergency/recipients}" method="post" class="mb-5">
         <div class="form-group">
-            <label for="fkIdRecipient">Recipient ID:</label>
-            <input type="text" id="fkIdRecipient" name="fkIdRecipient" required class="form-control">
+            <label for="phoneNumber">Phone number:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" required class="form-control">
         </div>
 
         <div class="form-group">
-            <label for="fkIdMailing">Mailing ID:</label>
-            <input type="text" id="fkIdMailing" name="fkIdMailing" required class="form-control">
+            <label for="fkIdLd">Local district ID:</label>
+            <input type="text" id="fkIdLd" name="fkIdLd" required class="form-control">
         </div>
 
         <div class="form-group">
             <label for="status">Status:</label>
             <select id="status" name="status" required class="form-control">
-                <option value="SENT">Sent</option>
-                <option value="CREATED">Created</option>
+                <option value="SENT">ONLINE</option>
+                <option value="CREATED">OFFLINE</option>
             </select>
         </div>
 
@@ -42,30 +42,30 @@
         <thead>
         <tr>
             <th>ID</th>
-            <th>Recipient ID</th>
-            <th>Mailing ID</th>
+            <th>Phone number</th>
+            <th>Local district ID</th>
             <th>Status</th>
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="mail : ${mails}">
-            <td th:text="${mail.id}"></td>
-            <td th:text="${mail.fkIdRecipient}"></td>
-            <td th:text="${mail.fkIdMailing}"></td>
+        <tr th:each="recipient : ${recipients}">
+            <td th:text="${recipient.id}"></td>
+            <td th:text="${recipient.phoneNumber}"></td>
+            <td th:text="${recipient.fkIdLd}"></td>
             <td>
-                <span th:if="${mail.status.name() == 'SENT'}" class="badge badge-success">SENT</span>
-                <span th:if="${mail.status.name() == 'CREATED'}" class="badge badge-warning">CREATED</span>
+                <span th:if="${recipient.status.name() == 'ONLINE'}" class="badge badge-success">ONLINE</span>
+                <span th:if="${recipient.status.name() == 'OFFLINE'}" class="badge badge-warning">OFFLINE</span>
             </td>
             <td>
                 <div style="display: flex;">
-                    <form id="edit" action="#" th:action="@{/emergency/mails/{id}(id=${mail.id})}" method="get">
+                    <form id="edit" action="#" th:action="@{/emergency/recipients/{id}(id=${recipient.id})}" method="get">
                         <button type="submit" class="btn btn-success mr-2">
                             <i class="fa fa-edit"></i> Edit
                         </button>
                     </form>
-                    <form id="delete" action="#" th:action="@{/emergency/delete-mail}" method="post">
-                        <input type="hidden" id="id" name="id" th:value="${mail.id}">
+                    <form id="delete" action="#" th:action="@{/emergency/delete-recipient}" method="post">
+                        <input type="hidden" id="id" name="id" th:value="${recipient.id}">
                         <button type="submit" class="btn btn-danger">
                             <i class="fa fa-trash"></i> Delete
                         </button>
@@ -107,7 +107,7 @@
         })
             .then(response => {
                 if (response.ok) {
-                    window.location.href = "/emergency/mails";
+                    window.location.href = "/emergency/recipients";
                 } else {
                     alert('Ошибка при отправке запроса');
                 }

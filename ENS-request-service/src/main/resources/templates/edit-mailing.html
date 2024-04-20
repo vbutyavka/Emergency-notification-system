@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Mail</title>
+    <title>Edit Mailing</title>
 
     <!-- import Bootstrap and Font Awesome -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
@@ -10,27 +10,19 @@
 </head>
 <body class="bg-light">
 <div class="container py-5">
-    <h1 class="text-center mb-5">Edit Mail</h1>
+    <h1 class="text-center mb-5">Edit Mailing</h1>
 
-    <form id="edit" action="#" th:action="@{/emergency/update-mail}" method="post" class="mb-5">
-        <input type="hidden" id="id" name="id" th:value="${mail.id}">
+    <form id="edit" action="#" th:action="@{/emergency/update-mailing}" method="post" class="mb-5">
+        <input type="hidden" id="id" name="id" th:value="${mailing.id}">
 
         <div class="form-group">
-            <label for="fkIdRecipient">Recipient ID:</label>
-            <input type="text" id="fkIdRecipient" name="fkIdRecipient" th:value="${mail.fkIdRecipient}" required class="form-control">
+            <label for="text">Text:</label>
+            <input type="text" id="text" name="text" th:value="${mailing.text}" required class="form-control">
         </div>
 
         <div class="form-group">
-            <label for="fkIdMailing">Mailing ID:</label>
-            <input type="text" id="fkIdMailing" name="fkIdMailing" th:value="${mail.fkIdMailing}" required class="form-control">
-        </div>
-
-        <div class="form-group">
-            <label for="status">Status:</label>
-            <select id="status" name="status" required class="form-control">
-                <option value="SENT">Sent</option>
-                <option value="CREATED">Created</option>
-            </select>
+            <label for="fkIdSender">Sender ID:</label>
+            <input type="text" id="fkIdSender" name="fkIdSender" th:value="${mail.fkIdSender}" required class="form-control">
         </div>
 
         <button class="btn btn-primary" type="submit">Save</button>
@@ -49,7 +41,7 @@
         })
             .then(response => {
                 if (response.ok) {
-                    window.location.href = "/emergency/mails";
+                    window.location.href = "/emergency/mailings";
                 } else {
                     alert('Ошибка при отправке запроса');
                 }
