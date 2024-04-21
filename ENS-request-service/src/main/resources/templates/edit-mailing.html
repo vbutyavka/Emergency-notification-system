@@ -9,6 +9,11 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
+<form id="back" action="#" th:action="@{/emergency/mailings}" method="get" style="text-align: right">
+    <button type="submit" class="btn btn-primary">
+        <i class="fa fa-arrow-left"></i> Back
+    </button>
+</form>
 <div class="container py-5">
     <h1 class="text-center mb-5">Edit Mailing</h1>
 
@@ -22,7 +27,7 @@
 
         <div class="form-group">
             <label for="fkIdSender">Sender ID:</label>
-            <input type="text" id="fkIdSender" name="fkIdSender" th:value="${mail.fkIdSender}" required class="form-control">
+            <input type="text" id="fkIdSender" name="fkIdSender" th:value="${mailing.fkIdSender}" required class="form-control">
         </div>
 
         <button class="btn btn-primary" type="submit">Save</button>

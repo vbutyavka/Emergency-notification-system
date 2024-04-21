@@ -11,7 +11,7 @@ import java.util.Optional;
 public abstract class CrudService<E extends AbstractEntity, R  extends CrudRepository<E>> implements ICrudService<E> {
 
     @Autowired
-    private Logger log;
+    protected Logger log;
 
     protected final R repository;
 

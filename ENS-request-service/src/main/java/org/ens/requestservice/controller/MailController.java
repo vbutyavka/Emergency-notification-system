@@ -1,6 +1,5 @@
 package org.ens.requestservice.controller;
 
-import org.ens.requestservice.controller.crud.RdController;
 import org.ens.requestservice.entity.Mail;
 import org.ens.requestservice.enums.MailStatus;
 import org.ens.requestservice.exceptions.EmptyFieldException;
@@ -17,7 +16,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/emergency")
-public class MailController extends RdController<Mail, MailService> {
+public class MailController {
 
     @Autowired
     MailService mailService;
@@ -26,12 +25,7 @@ public class MailController extends RdController<Mail, MailService> {
     @Autowired
     MailingService mailingService;
 
-    protected MailController(MailService service) {
-        super(service);
-    }
-
     @GetMapping("/mails")
-    @Override
     public String getAll(Model model) {
         List<Mail> mails = mailService.getAll();
         model.addAttribute("mails", mails);
@@ -39,7 +33,6 @@ public class MailController extends RdController<Mail, MailService> {
     }
 
     @GetMapping("/mails/{id}")
-    @Override
     public String get(@PathVariable Long id, Model model) {
         Mail mail = mailService.get(id);
         model.addAttribute("mail", mail);
@@ -101,7 +94,6 @@ public class MailController extends RdController<Mail, MailService> {
     }
 
     @PostMapping("/delete-mail")
-    @Override
     public String delete(@RequestParam Long id, Model model) {
         mailService.delete(id);
         List<Mail> mails = mailService.getAll();
