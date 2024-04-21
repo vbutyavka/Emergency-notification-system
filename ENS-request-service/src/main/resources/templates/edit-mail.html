@@ -7,8 +7,43 @@
     <!-- import Bootstrap and Font Awesome -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        /* Чтобы добавить немного персональности, мы добавляем некоторые стили CSS */
+        .navbar-custom {
+            background-color: #007bff;
+        }
+        .navbar-custom .navbar-brand,
+        .navbar-custom .nav-link {
+            color: #ffffff;
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #f5f5f5;
+            /* Синий */
+            line-height: 60px; /* Вертикальное выравнивание в промежутках */
+            text-align: center;
+        }
+    </style>
 </head>
 <body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <a class="navbar-brand" href="/emergency/home">Emergency</a>
+    <div class="collapse navbar-collapse"><ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="/emergency/mails">Mails</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/emergency/mailings">Mailings</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/emergency/recipients">Recipients</a>
+        </li>
+    </ul>
+    </div>
+</nav>
 <form id="back" action="#" th:action="@{/emergency/mails}" method="get" style="text-align: right">
     <button type="submit" class="btn btn-primary">
         <i class="fa fa-arrow-left"></i> Back
@@ -41,10 +76,13 @@
         <button class="btn btn-primary" type="submit">Save</button>
     </form>
 </div>
-
+<footer class="footer">
+    <div class="container">
+        <span class="text-muted">&copy; 2024, Emergency Services</span>
+    </div>
+</footer>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
-
 <script>
     document.getElementById('edit').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -64,6 +102,5 @@
             });
     });
 </script>
-
 </body>
 </html>
