@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<title>Response</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    .navbar-custom {
+        background-color: #007bff;
+    }
+    .navbar-custom .navbar-brand,
+    .navbar-custom .nav-link {
+        color: #ffffff;
+    }
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        background-color: #f5f5f5;
+        /* Синий */
+        line-height: 60px; /* Вертикальное выравнивание в промежутках */
+        text-align: center;
+    }
+</style>
+<body>
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <a class="navbar-brand" href="/emergency/home">Emergency</a>
+    <div class="collapse navbar-collapse"><ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="/emergency/mails">Mails</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/emergency/mailings">Mailings</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/emergency/recipients">Recipients</a>
+        </li>
+    </ul>
+    </div>
+</nav>
+<div class="container py-5">
+    <form id="back" action="#" th:action="@{/emergency/home}" method="get" style="text-align: right">
+        <button type="submit" class="btn btn-primary">
+            <i class="fa fa-arrow-left"></i> Home
+        </button>
+    </form>
+</div>
+<div class="container py-5">
+    <h1 class="text-center mb-5">Sent messages response</h1>
+
+    <!-- Success message -->
+    <div th:if="${territories.size() != 0}" class="alert alert-success text-center" role="alert">
+        <h4>Success!</h4>
+        <hr>
+        <h6 th:text="|Message:|"/>
+        <h6 th:text="|${message}|"/>
+        <hr>
+        <p th:text="|X messages were sent to the following territories:|"></p>
+        <ul>
+            <li th:each="territory : ${territories}" th:text="${territory}"></li>
+        </ul>
+    </div>
+
+    <!-- Error message -->
+    <div th:if="${territories.size() == 0}" class="alert alert-danger text-center" role="alert">
+        <h4>Error!</h4>
+        <p>No messages were sent.<br>It's possible territories were not chosen<br>Please try again.</p>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

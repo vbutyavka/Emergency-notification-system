@@ -95,7 +95,7 @@ public class RecipientController {
         return "recipients";
     }
 
-    @GetMapping("/recipients/number")
+    @GetMapping("/recipients/find")
     public String getByNumber(@RequestParam String phoneNumberSearch, Model model) {
         Recipient recipient = recipientService.getByPhoneNumber(phoneNumberSearch);
         List<Recipient> recipients = new ArrayList<>();

@@ -1,32 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <style>
-        /* Чтобы добавить немного персональности, мы добавляем некоторые стили CSS */
-        .navbar-custom {
-            background-color: #007bff;
-        }
-        .navbar-custom .navbar-brand,
-        .navbar-custom .nav-link {
-            color: #ffffff;
-        }
-        .footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 60px;
-            background-color: #f5f5f5;
-            /* Синий */
-            line-height: 60px; /* Вертикальное выравнивание в промежутках */
-            text-align: center;
-        }
-    </style>
-</head>
-<body class="bg-light">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<title>Home</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    /* Чтобы добавить немного персональности, мы добавляем некоторые стили CSS */
+    .navbar-custom {
+        background-color: #007bff;
+    }
+    .navbar-custom .navbar-brand,
+    .navbar-custom .nav-link {
+        color: #ffffff;
+    }
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        background-color: #f5f5f5;
+        /* Синий */
+        line-height: 60px; /* Вертикальное выравнивание в промежутках */
+        text-align: center;
+    }
+</style>
+<body>
 <nav class="navbar navbar-expand-lg navbar-custom">
     <a class="navbar-brand" href="/emergency/home">Emergency</a>
     <div class="collapse navbar-collapse"><ul class="navbar-nav mr-auto">
@@ -42,15 +39,89 @@
     </ul>
     </div>
 </nav>
-<div class="container py-5">
-    <h1 class="text-center mb-5">Welcome</h1>
+<div class="container">
+
+    <h1 class="my-5">Send Messages</h1>
+
+    <form id="send" th:action="@{${'/emergency/send'}}" method="post">
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingLocal">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseLocal" aria-expanded="true" aria-controls="collapseLocal">
+                            Local District
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseLocal" class="collapse" aria-labelledby="headingLocal" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="form-group" th:each="localDistrict : ${localDistricts}">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" th:value="${localDistrict.id}" th:attr="id='localDistrict'+${localDistrict.id}" name="localDistricts">
+                                <label class="form-check-label" th:attr="for='localDistrict'+${localDistrict.id}">[[ ${localDistrict.name} ]]</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingRegion">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseRegion" aria-expanded="true" aria-controls="collapseRegion">
+                            Region
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseRegion" class="collapse" aria-labelledby="headingRegion" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="form-group" th:each="region : ${regions}">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" th:value="${region.id}" th:attr="id='region'+${region.id}" name="regions">
+                                <label class="form-check-label" th:attr="for='region'+${region.id}">[[ ${region.name} ]]</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingFederal">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFederal" aria-expanded="true" aria-controls="collapseFederal">
+                            Federal District
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseFederal" class="collapse" aria-labelledby="headingFederal" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="form-group" th:each="federalDistrict : ${federalDistricts}">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" th:value="${federalDistrict.id}" th:attr="id='federalDistrict'+${federalDistrict.id}" name="federalDistricts">
+                                <label class="form-check-label" th:attr="for='federalDistrict'+${federalDistrict.id}">[[ ${federalDistrict.name} ]]</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mt-3">
+                <label for="message">Message</label>
+                <textarea class="form-control" name="message" id="message" rows="3" placeholder="Enter your message here"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">
+                <i class="fa fa-edit"></i>Send
+            </button>
+        </div>
+    </form>
 </div>
-<footer class="footer">
-    <div class="container">
-        <span class="text-muted">&copy; 2024, Emergency Services</span>
-    </div>
-</footer>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#accordion .collapse').on('show.bs.collapse', function () {
+            $('#accordion .collapse').not(this).collapse('hide');
+            $('input[type="checkbox"]').not($(this).find('input[type="checkbox"]')).prop('checked', false);
+        });
+    });
+</script>
 </body>
 </html>

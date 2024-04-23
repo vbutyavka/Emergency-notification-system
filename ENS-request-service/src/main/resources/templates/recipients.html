@@ -86,9 +86,9 @@
                 <i class="fa fa-search"></i> Get page
             </button>
         </form>
-        <form id="search" action="#" th:action="@{/emergency/recipient/number}" method="get">
+        <form id="search" action="#" th:action="@{/emergency/recipients/find}" method="get">
             <label for="phoneNumberSearch">Search by number:</label>
-            <input type="text" id="phoneNumberSearch" name="phoneNumberSearch" class="form-control">
+            <input type="text" id="phoneNumberSearch" name="phoneNumberSearch" required class="form-control" th:value="${phoneNumberSearch}">
             <button type="submit" class="btn btn-success">
                 <i class="fa fa-search"></i> Search
             </button>
@@ -133,11 +133,6 @@
         </tbody>
     </table>
 </div>
-<footer class="footer">
-    <div class="container">
-        <span class="text-muted">&copy; 2024, Emergency Services</span>
-    </div>
-</footer>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -158,26 +153,7 @@
                 alert('Ошибка при отправке AJAX-запроса: ' + error);
             });
     });
-
     document.getElementById('delete').addEventListener('submit', function(event) {
-        event.preventDefault();
-        fetch(this.action, {
-            method: this.method,
-            body: new FormData(this)
-        })
-            .then(response => {
-                if (response.ok) {
-                    window.location.href = "/emergency/recipients";
-                } else {
-                    alert('Ошибка при отправке запроса');
-                }
-            })
-            .catch(error => {
-                alert('Ошибка при отправке AJAX-запроса: ' + error);
-            });
-    });
-
-    document.getElementById('search').addEventListener('submit', function(event) {
         event.preventDefault();
         fetch(this.action, {
             method: this.method,
