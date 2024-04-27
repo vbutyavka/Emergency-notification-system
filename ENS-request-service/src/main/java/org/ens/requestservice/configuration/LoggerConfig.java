@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LoggerConfiguration {
+public class LoggerConfig {
     @Bean
     public Logger getLogger() {
         return LoggerFactory.getLogger("loggerBean");

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SenderRepository extends CrudRepository<Sender> {
+    Sender findByLogin(String login);
 }
