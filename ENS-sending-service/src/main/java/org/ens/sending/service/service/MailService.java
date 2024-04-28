@@ -1,10 +1,10 @@
-package service;
+package org.ens.sending.service.service;
 
-import entity.Mail;
+import org.ens.sending.service.entity.Mail;
+import org.ens.sending.service.repository.MailRepository;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.MailRepository;
 
 @Service
 public class MailService {

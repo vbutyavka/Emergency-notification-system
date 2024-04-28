@@ -1,10 +1,8 @@
-package kafka;
+package org.ens.sending.service.kafka;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.PartitionOffset;
-import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -27,20 +25,6 @@ public class KafkaListenerInstance {
                 data,
                 partition,
                 offset);
-    }
-
-    @KafkaListener(
-            groupId = "group2",
-            topicPartitions = @TopicPartition(topic = "topic-2",
-                    partitionOffsets = {
-                            @PartitionOffset(partition = "0", initialOffset = "0"),
-                            @PartitionOffset(partition = "3", initialOffset = "0")}))
-    public void listenToPartition(
-            @Payload String message,
-            @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
-        log.info("Received Message [{}] from partition-{}",
-                message,
-                partition);
     }
 
     @Component

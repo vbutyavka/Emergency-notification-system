@@ -1,11 +1,11 @@
-package entity;
+package org.ens.sending.service.entity;
 
-import enums.MailStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.ens.sending.service.enums.MailStatus;
 
 import java.io.Serializable;
 
