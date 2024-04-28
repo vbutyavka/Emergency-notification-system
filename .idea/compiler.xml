@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
         <module name="request-service" />
+        <module name="ENS-sending-service" />
         <module name="emergency-notification-system" />
         <module name="load-balancer" />
       </profile>
@@ -15,6 +16,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ENS-sending-service" options="-parameters" />
       <module name="api-gateway" options="-parameters" />
       <module name="load-balancer" options="-parameters" />
       <module name="request-service" options="-parameters" />
