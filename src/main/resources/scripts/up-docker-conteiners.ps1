@@ -4,6 +4,12 @@ Write-Host "Prepating for network"
 docker network create -d bridge my_network
 Write-Host "Network is ready"
 
+Write-Host "Prepating for broker"
+cd D:\projects\java\Emergency-notification-system
+docker build -t my-rabbitmq:tag -f  src/main/resources/docker/rabbitmq/Dockerfile .
+docker run -d --network my_network --name my-rabbitmq -p 5672:5672 -p 15672:15672 my-rabbitmq:tag
+Write-Host "Broker is ready"
+
 Write-Host "Prepating for database"
 cd D:\projects\java\Emergency-notification-system
 docker build -t postgres-master:tag -f src/main/resources/docker/database/master/Dockerfile .

@@ -25,6 +25,7 @@ public class WebSecurityConfig {
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
                 .formLogin()
+                .defaultSuccessUrl("/emergency/home", true)
                 .and()
                 .userDetailsService(senderService);
 

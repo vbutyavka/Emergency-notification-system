@@ -19,10 +19,16 @@ public class SenderService extends CrudService<Sender, SenderRepository>  implem
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        log.info("Trying to authenticate sender");
         Sender sender = repository.findByLogin(login);
         if (sender == null) {
             throw new UsernameNotFoundException(login);
         }
         return new User(sender.getLogin(), sender.getPword(), Collections.emptyList());
+    }
+
+    public Long getIdByLogin(String login) {
+        log.info("Trying to getIdByLogin({})", login);
+        return repository.getIdByLogin(login);
     }
 }
