@@ -42,7 +42,7 @@ public class RabbitConfig {
     @Bean
     public AmqpAdmin amqpAdmin() {
         RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
-        rabbitAdmin.declareQueue(new Queue(queue, false));
+        rabbitAdmin.declareQueue(new Queue(queue, true));
         return rabbitAdmin;
     }
 

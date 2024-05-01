@@ -29,6 +29,10 @@ public class SenderService extends CrudService<Sender, SenderRepository>  implem
 
     public Long getIdByLogin(String login) {
         log.info("Trying to getIdByLogin({})", login);
-        return repository.getIdByLogin(login);
+        Sender sender = repository.getByLogin(login);
+        if (sender == null) {
+            throw new UsernameNotFoundException(login);
+        }
+        return sender.getId();
     }
 }

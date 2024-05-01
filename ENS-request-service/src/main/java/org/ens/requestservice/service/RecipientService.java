@@ -32,8 +32,8 @@ public class RecipientService extends CrudService<Recipient, RecipientRepository
         List<Recipient> recipients = new ArrayList<>();
         Long from = repository.getMinId();
         Long to = repository.getMaxId();
-        for (Long i = from; i < to + BATCH_SIZE; i += BATCH_SIZE + 1) {
-            recipients.addAll(repository.getBatchByFederalDistrict(federalDistrictId, from, from + BATCH_SIZE));
+        for (Long i = from; i < to + BATCH_SIZE; i += BATCH_SIZE) {
+            recipients.addAll(repository.getBatchByFederalDistrict(federalDistrictId, i, i + BATCH_SIZE - 1));
         }
         return recipients;
     }
@@ -43,8 +43,8 @@ public class RecipientService extends CrudService<Recipient, RecipientRepository
         List<Recipient> recipients = new ArrayList<>();
         Long from = repository.getMinId();
         Long to = repository.getMaxId();
-        for (Long i = from; i < to + BATCH_SIZE; i += BATCH_SIZE + 1) {
-            recipients.addAll(repository.getBatchByRegion(regionId, from, from + BATCH_SIZE));
+        for (Long i = from; i < to + BATCH_SIZE; i += BATCH_SIZE ) {
+            recipients.addAll(repository.getBatchByRegion(regionId, i, i + BATCH_SIZE - 1));
         }
         return recipients;
     }
@@ -54,8 +54,8 @@ public class RecipientService extends CrudService<Recipient, RecipientRepository
         List<Recipient> recipients = new ArrayList<>();
         Long from = repository.getMinId();
         Long to = repository.getMaxId();
-        for (Long i = from; i < to + BATCH_SIZE; i += BATCH_SIZE + 1) {
-            recipients.addAll(repository.getBatchByLocalDistrict(localDistrictId, from, from + BATCH_SIZE));
+        for (Long i = from; i < to + BATCH_SIZE; i += BATCH_SIZE) {
+            recipients.addAll(repository.getBatchByLocalDistrict(localDistrictId, i, i + BATCH_SIZE - 1));
         }
         return recipients;
     }

@@ -2,6 +2,7 @@ package org.ens.requestservice.controller;
 
 import org.ens.requestservice.entity.*;
 import org.ens.requestservice.enums.MailStatus;
+import org.ens.requestservice.enums.RecipientStatus;
 import org.ens.requestservice.exceptions.EmptyFieldException;
 import org.ens.requestservice.service.*;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -90,7 +91,6 @@ public class NotificationController {
                 LocalDistrict ld = localDistrictService.get(localDistrictId);
                 if (ld != null) {
                     territories.add(ld.getName());
-                    rabbitTemplate.convertAndSend(message);
                     recipients.addAll(recipientService.getAllByLocalDistrict(ld.getId()));
                 }
             }
@@ -114,17 +114,26 @@ public class NotificationController {
             }
         }
 
+        List<Mail> onlineMails = new ArrayList<>();
+        List<Mail> offlineMails = new ArrayList<>();
         for (Recipient recipient : recipients) {
             Mail mail = new Mail();
             mail.setFkIdMailing(mailing.getId());
             mail.setFkIdRecipient(recipient.getId());
             mail.setStatus(MailStatus.CREATED);
-            mailService.insert(mail);
             rabbitTemplate.convertAndSend(mail);
+            if (recipient.getStatus().equals(RecipientStatus.ONLINE)) {
+                onlineMails.add(mail);
+            } else {
+                offlineMails.add(mail);
+            }
         }
+        mailService.insertAll(onlineMails);
+        mailService.insertAll(offlineMails);
 
         model.addAttribute("territories", territories);
         model.addAttribute("message", message);
+        model.addAttribute("counter", onlineMails.size() + offlineMails.size());
         return "sent-response";
     }
 }

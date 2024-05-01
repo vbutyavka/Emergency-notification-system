@@ -55,7 +55,7 @@
         <h6 th:text="|Message:|"/>
         <h6 th:text="|${message}|"/>
         <hr>
-        <p th:text="|X messages were sent to the following territories:|"></p>
+        <p th:text="|${counter} messages were sent to the following territories:|"></p>
         <ul>
             <li th:each="territory : ${territories}" th:text="${territory}"></li>
         </ul>

@@ -5,21 +5,18 @@ CREATE TABLE Sender
     pword varchar(255) NOT NULL,
     CONSTRAINT login_unique UNIQUE (login)
 );
-
 CREATE TABLE Mailing
 (
     id BIGSERIAL PRIMARY KEY,
     mail_text text NOT NULL,
     fk_id_sender bigint NOT NULL REFERENCES Sender(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
-
 CREATE TABLE Federal_District
 (
     id BIGSERIAL PRIMARY KEY,
     fd_name varchar(255) NOT NULL,
     CONSTRAINT fd_name_unique UNIQUE (fd_name)
 );
-
 CREATE TABLE Region
 (
     id BIGSERIAL PRIMARY KEY,
@@ -27,14 +24,12 @@ CREATE TABLE Region
     fk_id_fd int NOT NULL REFERENCES Federal_District(id) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT region_name_unique UNIQUE (region_name)
 );
-
 CREATE TABLE Local_District
 (
     id BIGSERIAL PRIMARY KEY,
     ld_name varchar(255) NOT NULL,
     fk_id_region int NOT NULL REFERENCES Region(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
-
 CREATE TABLE Recipient
 (
     id BIGSERIAL PRIMARY KEY,
@@ -50,3 +45,6 @@ CREATE TABLE Mail
     fk_id_mailing bigint NOT NULL REFERENCES Mailing(id) ON DELETE CASCADE ON UPDATE CASCADE,
     mail_status varchar(32) NOT NULL
 );
+CREATE INDEX idx_fkIdLd ON Recipient (fk_id_ld);
+CREATE INDEX idx_fkIdRegion ON Local_District (fk_id_region);
+CREATE INDEX idx_fkIdFd ON Region (fk_id_fd);
