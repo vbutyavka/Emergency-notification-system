@@ -1,10 +1,12 @@
 package org.ens.requestservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.ens.requestservice.entity.*;
 import org.ens.requestservice.enums.MailStatus;
-import org.ens.requestservice.enums.RecipientStatus;
 import org.ens.requestservice.exceptions.EmptyFieldException;
 import org.ens.requestservice.service.*;
+import org.slf4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/emergency")
@@ -46,6 +50,9 @@ public class NotificationController {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    protected Logger log;
 
     @GetMapping("/home")
     public String home(Model model) {
@@ -114,26 +121,34 @@ public class NotificationController {
             }
         }
 
-        List<Mail> onlineMails = new ArrayList<>();
-        List<Mail> offlineMails = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        long counter = 0L;
+        log.info("Trying to send to queue and insert to db {} messages", recipients.size());
         for (Recipient recipient : recipients) {
-            Mail mail = new Mail();
-            mail.setFkIdMailing(mailing.getId());
-            mail.setFkIdRecipient(recipient.getId());
-            mail.setStatus(MailStatus.CREATED);
-            rabbitTemplate.convertAndSend(mail);
-            if (recipient.getStatus().equals(RecipientStatus.ONLINE)) {
-                onlineMails.add(mail);
-            } else {
-                offlineMails.add(mail);
+            try {
+                Mail mail = new Mail();
+                mail.setFkIdMailing(mailing.getId());
+                mail.setFkIdRecipient(recipient.getId());
+                mail.setStatus(MailStatus.CREATED);
+                mail = mailService.insert(mail);
+
+                Map<String, Object> jsonMap = new HashMap<>();
+                jsonMap.put("mail_id", mail.getId());
+                jsonMap.put("address", recipient.getPhoneNumber());
+                jsonMap.put("text", mailing.getText());
+                String jsonMail = mapper.writeValueAsString(jsonMap);
+                rabbitTemplate.convertAndSend(jsonMail);
+
+                counter++;
+            } catch (JsonProcessingException e) {
+                log.info("Message for recipient {} could not be converted to JSON and wasn't sent", recipient.getId());
             }
         }
-        mailService.insertAll(onlineMails);
-        mailService.insertAll(offlineMails);
+        log.info("{} messages sent successfully", counter);
 
         model.addAttribute("territories", territories);
         model.addAttribute("message", message);
-        model.addAttribute("counter", onlineMails.size() + offlineMails.size());
+        model.addAttribute("counter", counter);
         return "sent-response";
     }
 }

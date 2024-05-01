@@ -4,7 +4,7 @@ ENV APP_HOME /app
 RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
 
-ARG JAR_FILE=target/request-service-1.0-SNAPSHOT.jar
+ARG JAR_FILE=target/sending-service-1.0-SNAPSHOT.jar
 COPY ${JAR_FILE} app.jar
 
 ENTRYPOINT ["java","-jar","app.jar"]

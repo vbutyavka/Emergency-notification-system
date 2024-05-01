@@ -10,7 +10,7 @@ public interface ICrudService<E extends AbstractEntity> {
 
     public E get(Long id);
 
-    public void insert(E entity);
+    public E insert(E entity);
 
     public void delete(Long id);
 }

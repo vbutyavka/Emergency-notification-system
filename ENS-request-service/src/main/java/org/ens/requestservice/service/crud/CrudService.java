@@ -38,9 +38,8 @@ public abstract class CrudService<E extends AbstractEntity, R  extends CrudRepos
     }
 
     @Override
-    public void insert(E entity) {
-        log.info("Trying to insert()");
-        repository.save(entity);
+    public E insert(E entity) {
+        return repository.save(entity);
     }
 
     @Override

@@ -29,10 +29,15 @@ cd D:\projects\java\Emergency-notification-system\ENS-request-service
 mvn clean install
 docker build -t request-service-network:tag -f src/main/docker/Dockerfile .
 
+cd D:\projects\java\Emergency-notification-system\ENS-sending-service
+mvn clean install
+docker build -t sending-service-network:tag -f src/main/docker/Dockerfile .
+
 docker run -d --network my_network --name load-balancer-network -p 8761:8761 load-balancer-network:tag
 docker run -d --network my_network --name api-gateway-network -p 8765:8765 api-gateway-network:tag
 docker run -d --network my_network --name request-service-network-inst1 -p 0:8771 request-service-network:tag
-#docker run -d --network my_network --name request-service-network-inst2 -p 0:8771 request-service-network:tag
+docker run -d --network my_network --name request-service-network-inst2 -p 0:8771 request-service-network:tag
+docker run -d --network my_network --name ыутвштп-service-network -p 0:8771 sending-service-network:tag
 
 Write-Host "Java-apps are ready"
 Write-Host "Wait about a minute..."
