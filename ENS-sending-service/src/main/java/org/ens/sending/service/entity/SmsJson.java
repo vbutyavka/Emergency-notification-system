@@ -23,11 +23,14 @@ public class SmsJson implements Serializable {
     private Long id;
 
     @JsonProperty("mail_id")
+    @Column(name = "mail_id")
     private Long mailId;
 
     @JsonProperty("address")
+    @Column(name = "address")
     private String address;
 
     @JsonProperty("text")
+    @Column(name = "sms_text")
     private String text;
 }

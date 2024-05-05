@@ -64,3 +64,10 @@ CREATE INDEX idx_recipient_on_local_district ON Recipient(fk_id_ld);
 CREATE INDEX idx_local_district_on_region ON Local_District(fk_id_region);
 CREATE INDEX idx_region_on_federal_district ON Region(fk_id_fd);
 CREATE INDEX idx_sender_on_login ON Sender(login);
+CREATE TABLE Sms_Json
+(
+    id BIGSERIAL PRIMARY KEY,
+    mail_id bigint NOT NULL,
+    address varchar(11) NOT NULL,
+    sms_text text NOT NULL
+);
