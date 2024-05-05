@@ -12,7 +12,8 @@ import java.net.http.HttpResponse;
 public class SmsRuSendingTest {
 
 
-    private String apiId = "это тайна";
+    //TODO: убрать перед пушем блеать!
+    private String apiId = "";
 
 
 
@@ -25,6 +26,7 @@ public class SmsRuSendingTest {
                 .header("Content-type", "application/x-www-form-urlencoded").build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         Assertions.assertEquals(200, response.statusCode());
+        System.out.println(response.body());
     }
 
     private SmsJson getSmsJson(String address) {

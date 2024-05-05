@@ -23,8 +23,8 @@ public class RabbitConfig {
     @Value("${rabbitmq.port}")
     private int port;
 
-    @Value("${rabbitmq.queue}")
-    private String queue;
+    @Value("${rabbitmq.callback}")
+    private String queueCallback;
 
     @Value("${rabbitmq.username}")
     private String username;
@@ -46,14 +46,14 @@ public class RabbitConfig {
     @Bean
     public AmqpAdmin amqpAdmin() {
         RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
-        rabbitAdmin.declareQueue(new Queue(queue, true));
+        rabbitAdmin.declareQueue(new Queue(queueCallback, true));
         return rabbitAdmin;
     }
 
     @Bean
     public RabbitTemplate rabbitTemplate() {
         RabbitTemplate template = new RabbitTemplate(connectionFactory());
-        template.setRoutingKey(queue);
+        template.setRoutingKey(queueCallback);
         template.setMessageConverter(new Jackson2JsonMessageConverter());
         return template;
     }
@@ -66,13 +66,5 @@ public class RabbitConfig {
         factory.setConcurrentConsumers(5);
         return factory;
     }
-//
-//    @Bean
-//    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, RabbitTemplateConfigurer configurer) {
-//        RabbitTemplate template = new RabbitTemplate();
-//        configurer.configure(template, connectionFactory);
-//        template.setMessageConverter(new Jackson2JsonMessageConverter());
-//        return template;
-//    }
 
 }

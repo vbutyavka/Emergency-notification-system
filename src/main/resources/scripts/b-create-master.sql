@@ -48,3 +48,19 @@ CREATE TABLE Mail
 CREATE INDEX idx_fkIdLd ON Recipient (fk_id_ld);
 CREATE INDEX idx_fkIdRegion ON Local_District (fk_id_region);
 CREATE INDEX idx_fkIdFd ON Region (fk_id_fd);
+CREATE TABLE Mail_History
+(
+    id BIGSERIAL PRIMARY KEY,
+    recipient_phone varchar(11) NOT NULL,
+    id_mailing bigint NOT NULL,
+    mail_status varchar(32) NOT NULL
+);
+ALTER TABLE Mail ADD CONSTRAINT mailing_recipient_uniq_on_mail UNIQUE (fk_id_mailing, fk_id_recipient);
+ALTER TABLE Mail_History ADD CONSTRAINT mailing_recipient_uniq_on_mail_history UNIQUE (id_mailing, recipient_phone);
+CREATE INDEX idx_mail_on_recipient_mailing ON Mail(fk_id_recipient, fk_id_mailing);
+CREATE INDEX idx_mailing_on_sender ON Mailing(fk_id_sender);
+CREATE INDEX idx_mail_history_on_recipient_mailing ON Mail_History(recipient_phone, id_mailing);
+CREATE INDEX idx_recipient_on_local_district ON Recipient(fk_id_ld);
+CREATE INDEX idx_local_district_on_region ON Local_District(fk_id_region);
+CREATE INDEX idx_region_on_federal_district ON Region(fk_id_fd);
+CREATE INDEX idx_sender_on_login ON Sender(login);

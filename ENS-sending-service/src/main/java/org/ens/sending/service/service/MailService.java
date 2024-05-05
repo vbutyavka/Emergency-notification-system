@@ -22,4 +22,14 @@ public class MailService {
         log.info("Trying to insert()");
         repository.save(entity);
     }
+
+    public Mail get(Long id) {
+        log.info("Trying to get({})", id);
+        return repository.findById(id).get();
+    }
+
+    public void delete(Long id) {
+        log.info("Trying to delete({})", id);
+        repository.deleteById(id);
+    }
 }

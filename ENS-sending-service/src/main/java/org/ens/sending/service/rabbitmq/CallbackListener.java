@@ -10,20 +10,16 @@ import org.ens.sending.service.service.MailService;
 import org.ens.sending.service.smsru.SmsRuHttpClient;
 import org.slf4j.Logger;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Component
-public class RabbitMqListener {
+public class CallbackListener {
 
     @Autowired
     private Logger log;
-
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
 
     @Autowired
     private MailService mailService;
@@ -31,13 +27,18 @@ public class RabbitMqListener {
     @Autowired
     private MailHistoryService mailHistoryService;
 
-    @RabbitListener(queues = "${rabbitmq.queue}")
+    @RabbitListener(queues = "${rabbitmq.callback}")
     public void getMessageFromQueue (String message) {
         UUID uuid = UUID.randomUUID();
 
         ObjectMapper mapper = new ObjectMapper();
         SmsJson smsJson = new SmsJson();
+
         Mail mail = mailService.get(smsJson.getMailId());
+        mailService.delete(smsJson.getMailId());
+        MailHistory history = new MailHistory();
+        history.setIdMailing(mail.getFkIdMailing());
+        history.setRecipientPhone(smsJson.getAddress());
         try {
             smsJson = mapper.readValue(message, SmsJson.class);
 
@@ -47,33 +48,15 @@ public class RabbitMqListener {
                 responseCode = 100;
             }
 
-            //TODO для теста
-            if (smsJson.getAddress().contains("123")) {
-                responseCode = 400;
-            } else if (smsJson.getAddress().contains("456")) {
-                throw new Exception("for test exception");
-            }
-            //TODO для теста
-
             if (responseCode > 99 && responseCode < 104) {
-                mailService.delete(smsJson.getMailId());
-
-                MailHistory history = new MailHistory();
-                history.setIdMailing(mail.getFkIdMailing());
-                history.setRecipientPhone(smsJson.getAddress());
                 history.setStatus(MailStatus.SENT);
-                mailHistoryService.insert(history);
             } else {
-                mail.setStatus(MailStatus.CALLBACK);
-                mailService.insert(mail);
-                rabbitTemplate.convertAndSend(smsJson.getAsJson());
+                history.setStatus(MailStatus.FAILED_AFTER_CALLBACK);
             }
+            mailHistoryService.insert(history);
 
         } catch (Exception e) {
             log.info("Message for recipient {} could not be converted from JSON and wasn't sent", smsJson.getAddress());
-            MailHistory history = new MailHistory();
-            history.setIdMailing(mail.getFkIdMailing());
-            history.setRecipientPhone(smsJson.getAddress());
             history.setStatus(MailStatus.FAILED);
             mailHistoryService.insert(history);
         }
