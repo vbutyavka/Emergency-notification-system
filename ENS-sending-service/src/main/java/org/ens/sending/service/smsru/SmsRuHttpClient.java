@@ -16,8 +16,7 @@ import java.util.UUID;
 @Component
 public class SmsRuHttpClient {
 
-    //TODO: убрать перед пушем блеать!
-    private static final String apiId = "ahahahhahhahahah";
+    private static final String apiId = "dont_use_original_api_id_in_test";
 
     public static int makePostRequest(UUID uuid, SmsJson smsJson){
         try {

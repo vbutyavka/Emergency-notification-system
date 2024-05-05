@@ -1,8 +1,7 @@
 package org.ens.sending.service.service;
 
-import org.ens.sending.service.entity.Mail;
-import org.ens.sending.service.enums.MailStatus;
-import org.ens.sending.service.repository.MailRepository;
+import org.ens.sending.service.entity.SmsJson;
+import org.ens.sending.service.repository.SmsJsonRepository;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,23 +9,23 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MailService {
+public class SmsJsonService {
 
     @Autowired
     protected Logger log;
 
-    protected final MailRepository repository;
+    protected final SmsJsonRepository repository;
 
-    public MailService(MailRepository repository) {
+    public SmsJsonService(SmsJsonRepository repository) {
         this.repository = repository;
     }
 
-    public void insert(Mail entity) {
+    public void insert(SmsJson entity) {
         log.info("Trying to insert()");
         repository.save(entity);
     }
 
-    public Mail get(Long id) {
+    public SmsJson get(Long id) {
         log.info("Trying to get({})", id);
         return repository.findById(id).get();
     }
@@ -36,8 +35,8 @@ public class MailService {
         repository.deleteById(id);
     }
 
-    public List<Mail> getByStatus(MailStatus status) {
-        log.info("Trying to getByStatus({})", status.name());
-        return repository.findByStatus(status);
+    public List<SmsJson> getAll() {
+        log.info("Trying to getAll()");
+        return repository.findAll();
     }
 }

@@ -140,6 +140,7 @@ public class NotificationController {
                 jsonMap.put("mail_id", mail.getId());
                 jsonMap.put("address", recipient.getPhoneNumber());
                 jsonMap.put("text", mailing.getText());
+                jsonMap.put("id", "");
                 String jsonMail = mapper.writeValueAsString(jsonMap);
                 rabbitTemplate.convertAndSend(queue, jsonMail);
 

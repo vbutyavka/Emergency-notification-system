@@ -7,12 +7,11 @@ import org.ens.sending.service.entity.SmsJson;
 import org.ens.sending.service.enums.MailStatus;
 import org.ens.sending.service.service.MailHistoryService;
 import org.ens.sending.service.service.MailService;
+import org.ens.sending.service.service.SmsJsonService;
 import org.ens.sending.service.smsru.SmsRuHttpClient;
 import org.slf4j.Logger;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -24,16 +23,13 @@ public class RabbitMqListener {
     private Logger log;
 
     @Autowired
-    private RabbitTemplate rabbitTemplate;
-
-    @Autowired
     private MailService mailService;
 
     @Autowired
     private MailHistoryService mailHistoryService;
 
-    @Value("${rabbitmq.callback}")
-    private String queueCallback;
+    @Autowired
+    private SmsJsonService smsJsonService;
 
     @RabbitListener(queues = "${rabbitmq.queue}")
     public void getMessageFromQueue (String message) {
@@ -74,13 +70,7 @@ public class RabbitMqListener {
             } else {
                 mail.setStatus(MailStatus.CALLBACK);
                 mailService.insert(mail);
-
-//                Map<String, Object> jsonMap = new HashMap<>();
-//                jsonMap.put("mail_id", smsJson.getMailId());
-//                jsonMap.put("address", smsJson.getAddress());
-//                jsonMap.put("text", smsJson.getText());
-//                String jsonMail = mapper.writeValueAsString(jsonMap);
-                rabbitTemplate.convertAndSend(queueCallback, smsJson);
+                smsJsonService.insert(smsJson);
             }
 
         } catch (NullPointerException e) {

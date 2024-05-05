@@ -22,7 +22,7 @@ public class SmsRuSendingTest {
         SmsJson smsJson = getSmsJson("89312808487");
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder(new URI("https://sms.ru/sms/send"))
-                .POST(HttpRequest.BodyPublishers.ofString("api_id=" + apiId + "&to=" + smsJson.getAddress() + "&msg=" + smsJson.getText() + "&json=1"))
+                .POST(HttpRequest.BodyPublishers.ofString("api_id=" + apiId + "&from=baranov&to=" + smsJson.getAddress() + "&msg=" + smsJson.getText() + "&json=1"))
                 .header("Content-type", "application/x-www-form-urlencoded").build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         Assertions.assertEquals(200, response.statusCode());

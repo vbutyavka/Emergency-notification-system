@@ -31,13 +31,10 @@ public class CallbackListener {
     public void getMessageFromQueue (@Payload SmsJson smsJson) {
         UUID uuid = UUID.randomUUID();
 
-//        ObjectMapper mapper = new ObjectMapper();
-//        SmsJson smsJson = new SmsJson();
         Mail mail = null;
         MailHistory history = new MailHistory();
 
         try {
-//            smsJson = mapper.readValue(message, SmsJson.class);
             mail = mailService.get(smsJson.getMailId());
             history.setIdMailing(mail.getFkIdMailing());
             history.setRecipientPhone(smsJson.getAddress());
