@@ -3,8 +3,6 @@ package org.ens.sending.service.smsru;
 import org.ens.sending.service.entity.SmsJson;
 import org.ens.sending.service.exception.SendingException;
 import org.ens.sending.service.exception.WrongUriException;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -18,11 +16,8 @@ import java.util.UUID;
 @Component
 public class SmsRuHttpClient {
 
-    @Autowired
-    protected static Logger log;
-
     //TODO: убрать перед пушем блеать!
-    private static final String apiId = "";
+    private static final String apiId = "ahahahhahhahahah";
 
     public static int makePostRequest(UUID uuid, SmsJson smsJson){
         try {
@@ -32,14 +27,11 @@ public class SmsRuHttpClient {
                     .header("Content-type", "application/x-www-form-urlencoded").build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            log.info("[" + uuid + "] " + response.body());
             return response.statusCode();
 
         } catch (URISyntaxException e) {
-            log.error("[" + uuid + "] URISyntaxException: " + e.getMessage());
             throw new WrongUriException(uuid, e.getMessage());
         } catch (IOException | InterruptedException e){
-            log.error("[" + uuid + "] SendingException: " + e.getMessage());
             throw new SendingException(uuid, e.getMessage());
         }
     }

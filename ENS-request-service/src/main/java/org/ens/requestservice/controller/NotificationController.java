@@ -9,6 +9,7 @@ import org.ens.requestservice.service.*;
 import org.slf4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -53,6 +54,9 @@ public class NotificationController {
 
     @Autowired
     protected Logger log;
+
+    @Value("${rabbitmq.queue}")
+    private String queue;
 
     @GetMapping("/home")
     public String home(Model model) {
@@ -137,7 +141,7 @@ public class NotificationController {
                 jsonMap.put("address", recipient.getPhoneNumber());
                 jsonMap.put("text", mailing.getText());
                 String jsonMail = mapper.writeValueAsString(jsonMap);
-                rabbitTemplate.convertAndSend(jsonMail);
+                rabbitTemplate.convertAndSend(queue, jsonMail);
 
                 counter++;
             } catch (JsonProcessingException e) {
