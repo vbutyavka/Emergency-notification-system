@@ -11,8 +11,6 @@ import java.net.http.HttpResponse;
 
 public class SmsRuSendingTest {
 
-
-    //TODO: убрать перед пушем блеать!
     private String apiId = "";
 
 
