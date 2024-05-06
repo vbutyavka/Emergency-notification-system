@@ -11,6 +11,7 @@
 - Spring Data JPA
 - PostgreSQL
 - RabbitMQ
+- Docker
 - Thymeleaf
 - Bootstrap
 --- 
